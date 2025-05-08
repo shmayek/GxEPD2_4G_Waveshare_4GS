@@ -536,22 +536,34 @@ void GxEPD2_750_T7::_InitDisplay()
 {
   if (_hibernating) _reset();
   _writeCommand(0x01); // POWER SETTING
-  _writeData (0x07);
-  _writeData (0x07); // VGH=20V,VGL=-20V
-  _writeData (0x3f); // VDH=15V
-  _writeData (0x3f); // VDL=-15V
+  _writeData (0x07); //
+  _writeData (0x17); // VGH=20V,VGL=-20V
+  _writeData (0x3a); // VDH=14V
+  _writeData (0x3a); // VDL=-14V
+  _writeData (0x03); // VDHR=3V
+  
   _writeCommand(0x00); //PANEL SETTING
   _writeData(0x1f); //KW: 3f, KWR: 2F, BWROTP: 0f, BWOTP: 1f
+
+  _writeCommand(0x06); // boost soft start
+  _writeData (0x17);   
+  _writeData (0x17);   
+  _writeData (0x28);   
+  _writeData (0x17);   
+
   _writeCommand(0x61); //tres
-  _writeData (WIDTH / 256); //source 800
-  _writeData (WIDTH % 256);
-  _writeData (HEIGHT / 256); //gate 480
-  _writeData (HEIGHT % 256);
+  _writeData (0x03); //source 800
+  _writeData (0x20);
+  _writeData (0x01); //gate 480
+  _writeData (0xE0);
+
   _writeCommand(0x15);
   _writeData(0x00);
+
   _writeCommand(0x50); //VCOM AND DATA INTERVAL SETTING
-  _writeData(0x29);    // LUTKW, N2OCP: copy new to old
+  _writeData(0x29);   //_writeData(0x10);   
   _writeData(0x07);
+
   _writeCommand(0x60); //TCON SETTING
   _writeData(0x22);
 }
